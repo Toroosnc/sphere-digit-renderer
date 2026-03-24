@@ -18,7 +18,7 @@ void printText(float x, float y, float z, const char* text) {
 }
 
 void drawDigit(float x, float y, float z, int val, float brightness) {
-    glColor3f(0.0f, 0.545f, 0.545f); 
+    glColor3f(1.0f, 1.0f, 1.0f); 
     char numStr[2];
     itoa(val, numStr, 10); 
     printText(x, y, z, numStr);
