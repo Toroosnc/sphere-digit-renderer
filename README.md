@@ -46,7 +46,7 @@ cl /EHsc main.cpp /link opengl32.lib user32.lib gdi32.lib
 ### MinGW / g++
 
 ```bash
-g++ main.cpp -o sphere.exe -lopengl32 -lgdi32 -luser32
+g++ circlenum.cpp -o sphere.exe -lopengl32 -lgdi32 -luser32
 ```
 
 ### Run
@@ -61,7 +61,7 @@ g++ main.cpp -o sphere.exe -lopengl32 -lgdi32 -luser32
 
 ```
 opengl-digit-sphere/
-├── main.cpp       # Source utama — semua logika rendering & window
+├── circlenum.cpp       
 └── README.md
 ```
 
