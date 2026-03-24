@@ -45,7 +45,7 @@ void display() {
     glRotatef(angleX, 1.0f, 0.0f, 0.0f);
     glRotatef(angleY, 0.0f, 1.0f, 0.0f);
 
-    float radius = 0.6f;
+    float radius = 0.7f;
     for (float phi = 0; phi < PI; phi += 0.12f) { 
         for (float theta = 0; theta < 2 * PI; theta += 0.12f) {
             float x = radius * sin(phi) * cos(theta);
