@@ -103,4 +103,4 @@ Kamu bisa ubah parameter berikut di `main.cpp`:
 
 ## License
 
-MIT License — bebas digunakan, dimodifikasi, dan didistribusikan.
+MIT License.
