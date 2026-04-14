@@ -95,7 +95,7 @@ int main() {
             SwapBuffers(hDC);
             angleX += 0.3f; 
             angleY += 0.5f;
-            Sleep(16); 
+            Sleep(60); 
         }
     }
     return 0;
