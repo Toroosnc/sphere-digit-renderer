@@ -46,7 +46,7 @@ cl /EHsc main.cpp /link opengl32.lib user32.lib gdi32.lib
 ### MinGW / g++
 
 ```bash
-g++ circlenum.cpp -o sphere.exe -lopengl32 -lgdi32 -luser32
+g++ circlenum.cpp -o sphere.exe -DUNICODE -D_UNICODE -lopengl32 -lgdi32 -luser32
 ```
 
 ### Run
