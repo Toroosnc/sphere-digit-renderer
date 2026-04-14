@@ -22,7 +22,7 @@ void printText(float x, float y, float z, const char* text) {
 }
 
 void drawDigit(float x, float y, float z, int val, float brightness) {
-    glColor3f(0.75f, 0.75f, 0.75f);
+    glColor3f(0.0f, 1.0f, 1.0f);
     char numStr[2];
     itoa(val, numStr, 10); 
     printText(x, y, z, numStr);
@@ -56,7 +56,7 @@ void display() {
     }
 
     float maxGray = 0.3f;
-    float intensity = ((sin(colorTime) + 1.0f) / 2.0f) *maxGray;
+    float intensity = ((sin(colorTime) + 0.0f) / 2.0f) *maxGray;
     glClearColor(intensity, intensity, intensity, 1.0f);
     colorTime += 0.01f;
 
