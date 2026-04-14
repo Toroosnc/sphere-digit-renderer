@@ -2,12 +2,16 @@
 #include <GL/gl.h>
 #include <cmath>
 #include <vector>
+#include <time.h>
 
 #pragma comment(lib, "opengl32.lib")
 
 float angleX = 0, angleY = 0;
 const double PI = 3.14159265358;
 GLuint base; 
+int colorState = 0;
+DWORD lastTick = 0;
+float colorTime = 0.0f;
 
 void printText(float x, float y, float z, const char* text) {
     glRasterPos3f(x, y, z);
@@ -18,7 +22,7 @@ void printText(float x, float y, float z, const char* text) {
 }
 
 void drawDigit(float x, float y, float z, int val, float brightness) {
-    glColor3f(0.5f, 0.0f, 0.0f); 
+    glColor3f(0.75f, 0.75f, 0.75f);
     char numStr[2];
     itoa(val, numStr, 10); 
     printText(x, y, z, numStr);
@@ -45,7 +49,18 @@ void display() {
     glRotatef(angleX, 1.0f, 0.0f, 0.0f);
     glRotatef(angleY, 0.0f, 1.0f, 0.0f);
 
-    float radius = 0.7f;
+    DWORD currentTick = GetTickCount();
+    if (currentTick - lastTick >= 1000) {
+        colorState = (colorState + 2) % 3;
+        lastTick = currentTick;
+    }
+
+    float maxGray = 0.3f;
+    float intensity = ((sin(colorTime) + 1.0f) / 2.0f) *maxGray;
+    glClearColor(intensity, intensity, intensity, 1.0f);
+    colorTime += 0.01f;
+
+    float radius = 0.6f;
     for (float phi = 0; phi < PI; phi += 0.12f) { 
         for (float theta = 0; theta < 2 * PI; theta += 0.12f) {
             float x = radius * sin(phi) * cos(theta);
@@ -57,6 +72,10 @@ void display() {
             drawDigit(x, y, z, val, brightness);
         }
     }
+}
+
+void timer(int value) {
+    colorState = (colorState + 1) % 3; 
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
@@ -71,6 +90,7 @@ int main() {
     wc.lpfnWndProc = WndProc;
     wc.hInstance = GetModuleHandle(NULL);
     wc.lpszClassName = L"SphereGL";
+    glEnable(GL_DEPTH_TEST);
     RegisterClass(&wc);
 
     HWND hWnd = CreateWindow(L"SphereGL", L"OpenGL Sphere Digital", 
