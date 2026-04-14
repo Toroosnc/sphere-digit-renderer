@@ -18,7 +18,7 @@ void printText(float x, float y, float z, const char* text) {
 }
 
 void drawDigit(float x, float y, float z, int val, float brightness) {
-    glColor3f(1.0f, 1.0f, 1.0f); 
+    glColor3f(0.3f, 0.3f, 0.3f); 
     char numStr[2];
     itoa(val, numStr, 10); 
     printText(x, y, z, numStr);
@@ -26,7 +26,7 @@ void drawDigit(float x, float y, float z, int val, float brightness) {
 
 void buildFont(HDC hDC) {
     base = glGenLists(96);
-    HFONT font = CreateFont(-18, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE | DEFAULT_PITCH, "Courier New");
+    HFONT font = CreateFont(-18, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE | DEFAULT_PITCH, L"Courier New");
     SelectObject(hDC, font);
     wglUseFontBitmaps(hDC, 32, 96, base);
 }
@@ -70,10 +70,10 @@ int main() {
     WNDCLASS wc = {0};
     wc.lpfnWndProc = WndProc;
     wc.hInstance = GetModuleHandle(NULL);
-    wc.lpszClassName = "SphereGL";
+    wc.lpszClassName = L"SphereGL";
     RegisterClass(&wc);
 
-    HWND hWnd = CreateWindow("SphereGL", "OpenGL Sphere Digital", 
+    HWND hWnd = CreateWindow(L"SphereGL", L"OpenGL Sphere Digital", 
         WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 1920, 1080, NULL, NULL, wc.hInstance, NULL);
 
     HDC hDC = GetDC(hWnd);
