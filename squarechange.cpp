@@ -3,4 +3,4 @@
 #include <cmath>
 #include <vector>
 #include <time.h>
-
+#include "squarechange.h"
