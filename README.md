@@ -44,7 +44,7 @@ Since everything is unified into a single file, you only need to compile one sou
 ### MinGW / g++
 ```bash
 g++ start.cpp -o startall.exe -DUNICODE -D_UNICODE -lopengl32 -lgdi32 -luser32
-./renderer.exe
+./startall.exe
 ```
 
 ---
