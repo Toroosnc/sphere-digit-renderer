@@ -9,9 +9,15 @@
 float angleX = 0, angleY = 0;
 const double PI = 3.14159265358;
 GLuint base; 
-int colorState = 0;
-DWORD lastTick = 0;
 float colorTime = 0.0f;
+
+enum RenderMode {
+    MODE_EMPTY,  
+    MODE_SPHERE, 
+    MODE_CUBE    
+};
+
+RenderMode currentMode = MODE_EMPTY; 
 
 void printText(float x, float y, float z, const char* text) {
     glRasterPos3f(x, y, z);
@@ -21,8 +27,8 @@ void printText(float x, float y, float z, const char* text) {
     glPopAttrib();
 }
 
-void drawDigit(float x, float y, float z, int val, float brightness) {
-    glColor3f(0.0f, 0.545f, 0.545f);
+void drawDigit(float x, float y, float z, int val) {
+    glColor3f(0.0f, 0.545f, 0.545f); // Warna Teal
     char numStr[2];
     itoa(val, numStr, 10); 
     printText(x, y, z, numStr);
@@ -33,6 +39,36 @@ void buildFont(HDC hDC) {
     HFONT font = CreateFont(-18, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, FF_DONTCARE | DEFAULT_PITCH, L"Courier New");
     SelectObject(hDC, font);
     wglUseFontBitmaps(hDC, 32, 96, base);
+}
+
+void renderSphere() {
+    float radius = 0.6f;
+    for (float phi = 0; phi < PI; phi += 0.12f) { 
+        for (float theta = 0; theta < 2 * PI; theta += 0.12f) {
+            float x = radius * sin(phi) * cos(theta);
+            float y = radius * sin(phi) * sin(theta);
+            float z = radius * cos(phi);
+
+            int val = (int)(abs(x + y + z) * 10) % 10;
+            drawDigit(x, y, z, val);
+        }
+    }
+}
+
+void renderCube() {
+    float size = 0.5f; 
+    float step = 0.12f; 
+
+    for (float i = -size; i <= size + 0.01f; i += step) {
+        for (float j = -size; j <= size + 0.01f; j += step) {
+            drawDigit(i, j, size, (int)(abs(i + j + size) * 10) % 10);
+            drawDigit(i, j, -size, (int)(abs(i + j - size) * 10) % 10);
+            drawDigit(i, size, j, (int)(abs(i + size + j) * 10) % 10);
+            drawDigit(i, -size, j, (int)(abs(i - size + j) * 10) % 10);
+            drawDigit(size, i, j, (int)(abs(size + i + j) * 10) % 10);
+            drawDigit(-size, i, j, (int)(abs(-size + i + j) * 10) % 10);
+        }
+    }
 }
 
 void display() {
@@ -54,28 +90,34 @@ void display() {
     glClearColor(intensity, intensity, intensity, 1.0f);
     colorTime += 0.01f;
 
-    float size = 0.5f; 
-    float step = 0.12f; 
-
-    for (float i = -size; i <= size + 0.01f; i += step) {
-        for (float j = -size; j <= size + 0.01f; j += step) {
-            
-            drawDigit(i, j, size, (int)(abs(i + j + size) * 10) % 10, 1.0f);
-            drawDigit(i, j, -size, (int)(abs(i + j - size) * 10) % 10, 1.0f);
-            
-            drawDigit(i, size, j, (int)(abs(i + size + j) * 10) % 10, 1.0f);
-            drawDigit(i, -size, j, (int)(abs(i - size + j) * 10) % 10, 1.0f);
-            
-            drawDigit(size, i, j, (int)(abs(size + i + j) * 10) % 10, 1.0f);
-            drawDigit(-size, i, j, (int)(abs(-size + i + j) * 10) % 10, 1.0f);
-        }
+    if (currentMode == MODE_SPHERE) {
+        renderSphere();
+    } 
+    else if (currentMode == MODE_CUBE) {
+        renderCube();
     }
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
-        case WM_CLOSE: PostQuitMessage(0); return 0;
-        default: return DefWindowProc(hWnd, message, wParam, lParam);
+        case WM_KEYDOWN:
+            if (wParam == 'C') {           
+                currentMode = MODE_SPHERE; 
+            } 
+            else if (wParam == 'S') {      
+                currentMode = MODE_CUBE;   
+            }
+            else if (wParam == VK_SPACE) { 
+                currentMode = MODE_EMPTY;  
+            }
+            return 0;
+            
+        case WM_CLOSE: 
+            PostQuitMessage(0); 
+            return 0;
+            
+        default: 
+            return DefWindowProc(hWnd, message, wParam, lParam);
     }
 }
 
@@ -83,10 +125,10 @@ int main() {
     WNDCLASS wc = {0};
     wc.lpfnWndProc = WndProc;
     wc.hInstance = GetModuleHandle(NULL);
-    wc.lpszClassName = L"CubeGL";
+    wc.lpszClassName = L"ShapeGL";
     RegisterClass(&wc);
 
-    HWND hWnd = CreateWindow(L"CubeGL", L"OpenGL Cube Digital", 
+    HWND hWnd = CreateWindow(L"ShapeGL", L"OpenGL Digit Renderer (Press C or S)", 
         WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 1920, 1080, NULL, NULL, wc.hInstance, NULL);
 
     HDC hDC = GetDC(hWnd);
