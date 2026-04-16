@@ -35,25 +35,16 @@ A real-time 3D sphere rendered entirely from numeric digits, built with legacy O
 
 ---
 
-## Build
+## Build & Run
 
-### MSVC (Developer Command Prompt)
+Since everything is unified into a single file, you only need to compile one source file. 
 
-```bash
-cl /EHsc main.cpp /link opengl32.lib user32.lib gdi32.lib
-```
+**Requirements:** Windows OS, MinGW/MSVC compiler, and standard Windows libraries (`opengl32`, `gdi32`, `user32`).
 
 ### MinGW / g++
-
 ```bash
-g++ circlenum.cpp -o sphere.exe -DUNICODE -D_UNICODE -lopengl32 -lgdi32 -luser32
-```
-
-### Run
-
-```bash
-./sphere.exe
-```
+g++ start.cpp -o startall.exe -DUNICODE -D_UNICODE -lopengl32 -lgdi32 -luser32
+./renderer.exe
 
 ---
 
@@ -63,6 +54,8 @@ g++ circlenum.cpp -o sphere.exe -DUNICODE -D_UNICODE -lopengl32 -lgdi32 -luser32
 opengl-digit-sphere/
 ├── circlenum.cpp       
 └── README.md
+└── squarechange.cpp
+└── start.cpp
 ```
 
 ---
@@ -79,7 +72,7 @@ opengl-digit-sphere/
 
 ## Configuration
 
-Kamu bisa ubah parameter berikut di `main.cpp`:
+Kamu bisa ubah parameter berikut di `circlenum.cpp`:
 
 | Parameter | Default | Keterangan |
 |-----------|---------|------------|
@@ -89,6 +82,16 @@ Kamu bisa ubah parameter berikut di `main.cpp`:
 | phi/theta step | `0.12f` | Kerapatan digit di permukaan |
 | Font size | `-18` | Ukuran font (negatif = pixel height) |
 | `Sleep(16)` | 16ms | Target ~60fps |
+
+---
+
+## Controls
+
+The application starts with a blank canvas. Use the following keys to interact:
+
+- **`C`** : Render **Sphere** mode.
+- **`S`** : Render **Cube** mode.
+- **`Spacebar`** : Clear screen (Empty mode).
 
 ---
 
