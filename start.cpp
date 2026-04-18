@@ -128,8 +128,11 @@ int main() {
     wc.lpszClassName = L"ShapeGL";
     RegisterClass(&wc);
 
-    HWND hWnd = CreateWindow(L"ShapeGL", L"OpenGL Digit Renderer (Press C or S)", 
-        WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 1920, 1080, NULL, NULL, wc.hInstance, NULL);
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+    HWND hWnd = CreateWindow(L"ShapeGL", L"OpenGL Digit Renderer C/S/Space", 
+        WS_POPUP | WS_VISIBLE, 0, 0, screenWidth, screenHeight, NULL, NULL, wc.hInstance, NULL);
 
     HDC hDC = GetDC(hWnd);
     PIXELFORMATDESCRIPTOR pfd = {sizeof(pfd), 1, PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER, PFD_TYPE_RGBA, 32};
